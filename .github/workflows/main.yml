@@ -1,0 +1,47 @@
+name: Real Estate Doc Intelligence CI
+# Descriptive name for the workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+# Triggers the workflow when:
+# 1. Code is pushed to main branch
+# 2. A pull request is made to main branch
+
+jobs:
+  infrastructure-validation:
+    # Name of the job
+    runs-on: ubuntu-latest
+    # Runs on the latest Ubuntu virtual machine
+    
+    steps:
+    # Series of tasks to run
+    
+    - uses: actions/checkout@v3
+    # Checks out your repository code
+    
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+    # Installs and configures Terraform
+      
+    - name: Terraform Initialize
+      run: terraform init
+      working-directory: ./terraform
+    # Initializes Terraform in the ./terraform directory
+      
+    - name: Validate Terraform Configuration
+      run: terraform validate
+      working-directory: ./terraform
+    # Checks Terraform configuration for errors
+      
+    - name: Plan Infrastructure Changes
+      run: terraform plan
+      working-directory: ./terraform
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # Shows what changes Terraform would make
+    # ${{ secrets.XXX }} means you must manually add these 
+    # in GitHub repository settings
