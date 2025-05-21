@@ -13,3 +13,4 @@ AI-powered document analysis and Q&A system for real estate professionals
 - Kubernetes
 - React
 - Vector Database
+- GitHub Actions for CI/CD
